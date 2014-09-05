@@ -1,0 +1,68 @@
+public class googlemap extends ActionBarActivity {
+	private LocationManager locationManager;
+	private String provider;
+	public GoogleMap mapa;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.google_map);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        provider = locationManager.getBestProvider(criteria, false);
+        Location location = locationManager.getLastKnownLocation(provider);
+        GoogleMap mapa = ((SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+       
+        if (location != null) {
+
+        
+
+            mapa.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+                    location.getLatitude(), location.getLongitude()), 14));
+
+            mapa.addMarker(new MarkerOptions()
+                    .position(
+                            new LatLng(location.getLatitude(), location
+                                    .getLongitude())).title("I'm here"));
+        }
+
+    
+      
+    
+      mapa.setMyLocationEnabled(true);
+      mapa.getUiSettings().setMyLocationButtonEnabled(true);
+      mapa.addMarker(new MarkerOptions().position(new LatLng(38.838039, 0.121462)).title("Marian Martin").snippet("La mejor dietista ").icon(BitmapDescriptorFactory.fromResource(R.drawable.corazon)));
+      mapa.addMarker(new MarkerOptions().position(new LatLng(31.838039, 0.121462)).title("Marian Martin").snippet("La mejor dietista ").icon(BitmapDescriptorFactory.fromResource(R.drawable.corazon)));
+      
+      
+      
+      mapa.setOnMarkerClickListener(new OnMarkerClickListener() {
+          public boolean onMarkerClick(Marker marker) {
+              Toast.makeText(
+                  googlemap.this,
+                  "Marcador presionado:\n" +
+                  marker.getTitle(),
+                  Toast.LENGTH_SHORT).show();
+       
+              return false;
+          }
+      });
+     
+      
+      
+      mapa.setOnInfoWindowClickListener(new OnInfoWindowClickListener(){
+    	  @Override
+    	  public void onInfoWindowClick(Marker marker){
+    		  Intent intent = new Intent(googlemap.this, Email.class);
+    		
+				startActivity(intent);
+    	  }
+      });
+      
+      
+      
+    }
+    
+
+}
+
+
